@@ -1,0 +1,98 @@
+# AirWiki Skill Template
+
+Description: Maintain a personal LLM Wiki in Airtable. Use when the user asks to ingest sources, add notes, query their wiki, save syntheses, promote concepts, or lint/audit the vault. Requires Airtable MCP and a configured AirWiki base. This template is not install-ready until all placeholders are replaced with live Airtable IDs from the user's own base.
+
+## Template Status
+
+This file is a reusable skeleton for agents that generate a user-specific `SKILL.md` during setup. Do not install it as-is. Replace every `<PLACEHOLDER>` after creating or selecting the user's Airtable base.
+
+Never commit a filled-in user skill with real Airtable workspace IDs, base IDs, table IDs, field IDs, record IDs, OAuth data, private source summaries, or personal records to the public AirWiki template repository.
+
+## Connection Details
+
+- Workspace ID: `<AIRTABLE_WORKSPACE_ID>`
+- Base name: `<AIRTABLE_BASE_NAME>`
+- Base ID: `<AIRTABLE_BASE_ID>`
+- Citation format: `(source: SRC-NNN)` unless the user chooses another format.
+
+## Tables
+
+Record the final table IDs and field IDs after setup:
+
+- Sources: `<SOURCES_TABLE_ID>`
+- Articles: `<ARTICLES_TABLE_ID>`
+- Notes: `<NOTES_TABLE_ID>`
+- Entities: `<ENTITIES_TABLE_ID>`
+- Concepts: `<CONCEPTS_TABLE_ID>`
+- Syntheses: `<SYNTHESES_TABLE_ID>`
+- Topics: `<TOPICS_TABLE_ID>`
+- Activity Log: `<ACTIVITY_LOG_TABLE_ID>`
+
+For each table, include every field name, field ID, field type, and exact single-select option string. Airtable write operations should use field IDs where available.
+
+## ID Conventions
+
+- Articles: `ART-NNN`
+- Notes: `NOTE-NNN`
+- Entities: `ENT-NNN`
+- Concepts: `CON-NNN`
+- Syntheses: `SYN-NNN`
+- Sources: use Airtable record IDs plus a readable Title unless the user adds a `Source ID` field.
+
+To generate the next ID, query the relevant table, find the highest existing matching prefix, increment by one, and zero-pad to three digits. Never guess without querying.
+
+## Trigger Vocabulary
+
+- INGEST: "ingest this", "add this source", "add this paper to the wiki", "process this URL", "read and file this"
+- QUERY: "what do I know about", "how does X relate to Y", "compare A and B", "show me my view on"
+- SYNTHESIZE-AND-FILE: "save this answer", "file this as a synthesis", "keep this", "add this to the wiki"
+- LINT: "lint the wiki", "audit the vault", "health check", "what's stale"
+
+## INGEST Playbook
+
+1. Read the source from URL, file, transcript, or pasted content.
+2. Create a Source record with metadata, summary, key quotes, status, and date read.
+3. Discuss key takeaways with the user before updating any other page.
+4. Identify affected Entities, Concepts, Articles, Notes, and Topics.
+5. Update existing page bodies with cited claims and contradiction notes.
+6. Create new Entity or Concept pages only when warranted.
+7. Update linked record fields in both directions where needed.
+8. Add an Activity Log entry.
+9. Summarize what changed.
+
+## QUERY Playbook
+
+1. Search relevant Airtable tables.
+2. Read matching records and linked pages.
+3. Synthesize the answer with inline citations to records.
+4. State gaps plainly when the wiki lacks evidence.
+5. Ask whether the answer is worth saving as a Synthesis.
+
+## SYNTHESIZE-AND-FILE Playbook
+
+1. Create a Synthesis record with the next `SYN-NNN` ID.
+2. Include the question or clean title, answer body, type, date created, status, and citations.
+3. Link all contributing Sources, Notes, Articles, Concepts, and Entities.
+4. Add an Activity Log entry.
+5. Confirm the saved Synthesis ID.
+
+## LINT Playbook
+
+Scan for orphan pages, stale pages, undecomposed sources, possible missing concept pages, candidate contradictions, missing citations, broken links, and naming inconsistencies. Report findings first and apply only fixes the user approves.
+
+## Non-Negotiable Constraints
+
+- Do not fabricate wiki evidence.
+- Do not mutate Airtable schema or records without user approval where the platform requires it.
+- Do not modify or delete existing Airtable bases without explicit approval.
+- Do not auto-ingest content during setup unless the user explicitly asks.
+- Every substantive body update must cite its source.
+- Source material remains the ground truth; wiki pages are compressed working notes.
+
+## Self-Check Before Replying
+
+- Did every substantive claim cite a source or record?
+- Did I update linked records consistently?
+- Did I log the operation when records changed?
+- Did I preserve uncertainty, contradictions, and source limitations?
+- Did I avoid writing private or live Airtable identifiers into public template files?
