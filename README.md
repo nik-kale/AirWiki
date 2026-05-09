@@ -6,7 +6,7 @@ A personal LLM Wiki built on Airtable.
 
 Inspired by [Andrej Karpathy's LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern. Adapted from local Markdown files to Airtable for cross-device cloud-native operation.
 
-![airwiki architecture: 8 tables and 4 operations](architecture.png)
+![airwiki architecture: 8 tables and 4 operations](airwiki-architecture.png)
 
 ---
 
@@ -18,11 +18,30 @@ The LLM Wiki pattern says: an LLM can do all the bookkeeping (cross-referencing,
 
 **airwiki** uses Airtable instead of Obsidian. You lose Obsidian's local-first storage and graph view. You gain mobile/web access from any device, structured queries, enforced bidirectional links, and one-click sharing. The LLM runs through MCP, so any agent that supports Airtable MCP can read and write your wiki: Claude Code, Cursor, Claude Desktop, OpenCode, Codex.
 
+## Lineage and positioning
+
+This is not a replacement for Karpathy's original LLM Wiki idea, and it is not affiliated with or endorsed by Andrej Karpathy. It is a substrate experiment: **what happens if the LLM Wiki pattern runs on Airtable instead of local Markdown/Obsidian?**
+
+Karpathy's gist describes the durable pattern: raw sources, an LLM-maintained wiki, and a schema file that teaches the agent how to operate. airwiki keeps that pattern and swaps the storage layer for a cloud database with typed fields and linked records.
+
+## What's different
+
+| Karpathy-style Obsidian wiki | airwiki |
+|---|---|
+| Local Markdown files | Airtable records with structured fields |
+| Wiki-links like `[[Concept]]` | Linked record fields maintained by Airtable |
+| Obsidian is the reading/browsing UI | Airtable web, desktop, and mobile are the UI |
+| Git is the default history layer | Airtable revision history is the history layer |
+| Excellent for local-first ownership | Better for cloud access, sharing, and structured queries |
+| Free core app, optional paid sync | Free tier with record/API limits, paid as the wiki grows |
+
+The point is not that Airtable is universally better. It is better for one particular user: someone who wants a structured, shareable, mobile-accessible wiki and is willing to trade local-first purity for cloud-native ergonomics.
+
 ## What's in this repo
 
 - **`setup-prompt.md`** — paste this into your LLM agent of choice. It walks you through building the entire system in your Airtable account in 30-60 minutes.
 - **`skill/SKILL.md.template`** — a placeholder skill skeleton for agents that want a visible starting point. It is not install-ready until an executing setup agent replaces the placeholders with IDs from your Airtable base.
-- **`architecture.png`** — the architecture diagram used in this README.
+- **`airwiki-architecture.png`** / **`architecture.svg`** — the architecture diagram used in this README.
 - **`README.md`** — what you're reading now. The architecture description.
 - **`LICENSE`** — MIT.
 
@@ -122,6 +141,12 @@ The wiki compounds slowly. After a month of daily use, ~50-100 records and the c
 
 ## Why Airtable instead of Obsidian
 
+The biggest objection is valid: **Obsidian's core app is free without limits; Airtable's free plan has limits.** Airtable currently documents 1,000 records per base, 1,000 API calls per workspace per month, 1GB attachments per base, and two weeks of revision history on Free. Team raises the limit to 50,000 records per base, 100,000 API calls per workspace per month, 20GB attachments, and one year of revision history. See [Airtable's plan overview](https://support.airtable.com/docs/en/airtable-plans) for current limits.
+
+Obsidian is the right default if cost, local ownership, graph view, and Markdown portability matter most. Obsidian also offers optional paid Sync for cross-device use; its pricing page describes the core app as free and Sync as an add-on. See [Obsidian pricing](https://obsidian.md/pricing.html).
+
+airwiki is for the opposite trade-off: you want a relational database feel, native mobile/web access, built-in sharing, and MCP-writeable structured records more than you want local files.
+
 | Dimension | Obsidian (Karpathy's original) | Airtable (airwiki) |
 |---|---|---|
 | Storage | Local files | Cloud, multi-device |
@@ -141,6 +166,17 @@ The wiki compounds slowly. After a month of daily use, ~50-100 records and the c
 **Pick airwiki if:** you work across multiple devices (web/mobile/desktop), you want to share parts of the wiki with collaborators (advisor, team), you need structured queries (filter by date, group by status, count by category), you prefer enforced relational integrity, you want any LLM agent with Airtable MCP to be able to read and write your wiki.
 
 Both are legitimate. The pattern works in either substrate.
+
+## Other paths
+
+If you want mobile access without Airtable, there are real alternatives:
+
+- **Obsidian + Sync**: closest to Karpathy's original while still giving mobile access. You keep Markdown, graph view, and local-first storage, but the LLM still needs file access to maintain the wiki.
+- **Obsidian + Git/iCloud/Dropbox**: cheaper or more DIY sync paths. Great for technical users, but conflict handling and mobile writeback can get fiddly.
+- **Notion or Tana**: mobile-friendly and structured, but the LLM Wiki workflow depends on the available API/MCP write surface and whether linked entities, citations, and bulk updates are pleasant enough in practice.
+- **Open-source LLM Wiki tools**: the ecosystem is moving quickly. The [GitHub `llm-wiki` topic](https://github.com/topics/llm-wiki) lists many implementations, including local-first, Obsidian-oriented, MCP-enabled, and static-site variants.
+
+airwiki's niche is narrower: it is the Airtable/MCP version for people who already like Airtable's database model.
 
 ## Getting started
 
@@ -193,6 +229,7 @@ There's also vendor lock-in to consider. Airtable holds your data. If Airtable d
 
 - **Andrej Karpathy** for the [LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) that articulated the pattern.
 - **The community implementations** in the gist comments (Kompl, SwarmVault, Aura, Link, Synthadoc, NEXUS, and others) that explored variations and surfaced edge cases.
+- **The broader LLM Wiki ecosystem** on GitHub, where many people are exploring local-first, Obsidian, MCP, static-site, and database-backed versions of the same core idea.
 - **Vannevar Bush's Memex** (1945) for the original vision of personal, curated knowledge stores with associative trails. Bush couldn't solve who does the maintenance; LLMs can.
 - **Obsidian** for proving that a markdown-files-and-wiki-links substrate can scale to serious personal knowledge work.
 - **Airtable** for being a database that's actually pleasant to use across devices.
